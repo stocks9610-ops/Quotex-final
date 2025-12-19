@@ -641,6 +641,262 @@
             overflow-y: auto;
         }
 
+        /* Statistics Widget */
+        .stats-widget {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #333;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 12px;
+            background: #0a0a0a;
+            border-radius: 6px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #b3b3b3;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-value.positive {
+            color: #00aa00;
+        }
+
+        .stat-value.negative {
+            color: #cc0000;
+        }
+
+        /* Price Alert Indicator */
+        .price-indicator {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            animation: pulse 2s infinite;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .price-indicator.active {
+            opacity: 1;
+        }
+
+        .price-indicator.up {
+            background: radial-gradient(circle, rgba(0, 170, 0, 0.3), transparent);
+            color: #00aa00;
+        }
+
+        .price-indicator.down {
+            background: radial-gradient(circle, rgba(204, 0, 0, 0.3), transparent);
+            color: #cc0000;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: translateY(-50%) scale(1);
+            }
+            50% {
+                transform: translateY(-50%) scale(1.1);
+            }
+        }
+
+        /* News Ticker */
+        .news-ticker {
+            background: #1a1a1a;
+            border-top: 1px solid #333;
+            padding: 8px 24px;
+            overflow: hidden;
+            position: relative;
+            height: 35px;
+        }
+
+        .ticker-content {
+            display: flex;
+            animation: scroll 30s linear infinite;
+            white-space: nowrap;
+        }
+
+        .ticker-item {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 40px;
+            font-size: 13px;
+            color: #b3b3b3;
+        }
+
+        .ticker-item i {
+            margin-right: 8px;
+            color: #00ff7f;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        /* Market Status Badge */
+        .market-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #333;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff7f;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #333;
+            border-top-color: #00ff7f;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* AI Prediction Signal */
+        .prediction-signal {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            border: 2px solid #00ff7f;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            animation: glow 2s infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(0, 255, 127, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(0, 255, 127, 0.6);
+            }
+        }
+
+        .signal-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            color: #00ff7f;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .signal-header i {
+            font-size: 18px;
+        }
+
+        .signal-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .signal-direction {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(204, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 2px solid #cc0000;
+        }
+
+        .signal-direction.bullish {
+            background: rgba(0, 170, 0, 0.2);
+            border-color: #00aa00;
+        }
+
+        .signal-direction.bullish span {
+            color: #00aa00;
+        }
+
+        .signal-direction i {
+            font-size: 24px;
+            color: #cc0000;
+        }
+
+        .signal-direction.bullish i {
+            color: #00aa00;
+        }
+
+        .signal-direction span {
+            font-size: 16px;
+            font-weight: 700;
+            color: #cc0000;
+        }
+
+        .signal-confidence {
+            text-align: right;
+        }
+
+        .confidence-label {
+            display: block;
+            font-size: 11px;
+            color: #b3b3b3;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .confidence-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #00ff7f;
+        }
+
         /* Responsive */
         @media (max-width: 1024px) {
             .sidebar {
@@ -798,51 +1054,58 @@
                 </div>
 
                 <div class="category-section">
-                    <div class="category-header" data-category="commodities">
-                        <span><i class="fas fa-oil-can"></i> Commodities</span>
+                    <div class="category-header" data-category="stocks">
+                        <span><i class="fas fa-chart-line"></i> Stocks</span>
                         <i class="fas fa-chevron-down category-toggle"></i>
                     </div>
-                    <div class="asset-list collapsed" id="commoditiesList">
-                        <div class="asset-item" data-symbol="XAU/USD">
+                    <div class="asset-list collapsed" id="stocksList">
+                        <div class="asset-item" data-symbol="AAPL">
+                            <div class="asset-info">
+                                <div class="asset-icon">🍎</div>
+                                <span>Apple</span>
+                            </div>
+                            <div class="asset-price" id="aapl-price">195.00</div>
+                            <div class="asset-change positive" id="aapl-change">+0.50%</div>
+                        </div>
+                        <div class="asset-item" data-symbol="GOOGL">
                             <div class="asset-info">
                                 <div class="asset-icon">G</div>
-                                <span>XAU/USD</span>
+                                <span>Google</span>
                             </div>
-                            <div class="asset-price" id="xauusd-price">1,945</div>
-                            <div class="asset-change positive" id="xauusd-change">+0.45%</div>
+                            <div class="asset-price" id="googl-price">140.00</div>
+                            <div class="asset-change negative" id="googl-change">-0.30%</div>
                         </div>
-                        <div class="asset-item" data-symbol="XAG/USD">
+                        <div class="asset-item" data-symbol="MSFT">
                             <div class="asset-info">
-                                <div class="asset-icon">S</div>
-                                <span>XAG/USD</span>
+                                <div class="asset-icon">M</div>
+                                <span>Microsoft</span>
                             </div>
-                            <div class="asset-price" id="xagusd-price">23.45</div>
-                            <div class="asset-change negative" id="xagusd-change">-0.23%</div>
+                            <div class="asset-price" id="msft-price">380.00</div>
+                            <div class="asset-change positive" id="msft-change">+0.80%</div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="category-section">
-                    <div class="category-header" data-category="indices">
-                        <span><i class="fas fa-chart-bar"></i> Indices</span>
-                        <i class="fas fa-chevron-down category-toggle"></i>
-                    </div>
-                    <div class="asset-list collapsed" id="indicesList">
-                        <div class="asset-item" data-symbol="SPX">
+                        <div class="asset-item" data-symbol="TSLA">
                             <div class="asset-info">
-                                <div class="asset-icon">S</div>
-                                <span>S&P 500</span>
+                                <div class="asset-icon">T</div>
+                                <span>Tesla</span>
                             </div>
-                            <div class="asset-price" id="spx-price">4,185</div>
-                            <div class="asset-change positive" id="spx-change">+0.67%</div>
+                            <div class="asset-price" id="tsla-price">245.00</div>
+                            <div class="asset-change positive" id="tsla-change">+1.20%</div>
                         </div>
-                        <div class="asset-item" data-symbol="NDX">
+                        <div class="asset-item" data-symbol="AMZN">
+                            <div class="asset-info">
+                                <div class="asset-icon">A</div>
+                                <span>Amazon</span>
+                            </div>
+                            <div class="asset-price" id="amzn-price">155.00</div>
+                            <div class="asset-change negative" id="amzn-change">-0.40%</div>
+                        </div>
+                        <div class="asset-item" data-symbol="NVDA">
                             <div class="asset-info">
                                 <div class="asset-icon">N</div>
-                                <span>NASDAQ</span>
+                                <span>NVIDIA</span>
                             </div>
-                            <div class="asset-price" id="ndx-price">12,845</div>
-                            <div class="asset-change negative" id="ndx-change">-0.34%</div>
+                            <div class="asset-price" id="nvda-price">495.00</div>
+                            <div class="asset-change positive" id="nvda-change">+2.10%</div>
                         </div>
                     </div>
                 </div>
@@ -896,6 +1159,25 @@
                         <span class="payout-label">Payout</span>
                         <span class="payout-value">85%</span>
                     </div>
+                    
+                    <!-- AI Prediction Signal -->
+                    <div class="prediction-signal" id="predictionSignal">
+                        <div class="signal-header">
+                            <i class="fas fa-brain"></i>
+                            <span>AI Prediction</span>
+                        </div>
+                        <div class="signal-body">
+                            <div class="signal-direction" id="signalDirection">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>BEARISH</span>
+                            </div>
+                            <div class="signal-confidence" id="signalConfidence">
+                                <span class="confidence-label">Confidence:</span>
+                                <span class="confidence-value">87%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="trade-buttons">
                         <button class="trade-btn up" id="upBtn">
                             <i class="fas fa-arrow-up"></i> UP
@@ -957,7 +1239,6 @@
     </div>
 
     <script>
-        const FINNHUB_API_KEY = 'd52emq1r01qhp11ukeigd52emq1r01qhp11ukej0';
         const canvas = document.getElementById('tradingCanvas');
         const ctx = canvas.getContext('2d');
         let price = 0.6584;
@@ -968,34 +1249,134 @@
         let selectedAmount = 10;
         let currentAsset = 'AUD/USD';
         let currentTimeframe = '1m';
+        let wsConnection = null;
+        let reconnectAttempts = 0;
+        const MAX_RECONNECT_ATTEMPTS = 5;
 
-        // Asset data with price ranges and volatility
+        // Finnhub API Key
+        const FINNHUB_API_KEY = 'd52emq1r01qhp11ukeigd52emq1r01qhp11ukej0';
+        
+        // Asset data with price ranges and volatility - will be updated by API
         const assetData = {
-            'AUD/USD': { price: 0.6584, change: -0.12, volatility: 0.0005, category: 'forex' },
-            'EUR/USD': { price: 1.0845, change: 0.08, volatility: 0.0003, category: 'forex' },
-            'GBP/USD': { price: 1.2723, change: -0.05, volatility: 0.0004, category: 'forex' },
-            'USD/JPY': { price: 157.82, change: 0.15, volatility: 0.15, category: 'forex' },
-            'BTC/USD': { price: 43250, change: 2.34, volatility: 50, category: 'crypto' },
-            'ETH/USD': { price: 2650, change: -1.12, volatility: 15, category: 'crypto' },
-            'XAU/USD': { price: 1945, change: 0.45, volatility: 2, category: 'commodities' },
-            'XAG/USD': { price: 23.45, change: -0.23, volatility: 0.05, category: 'commodities' },
-            'SPX': { price: 4185, change: 0.67, volatility: 5, category: 'indices' },
-            'NDX': { price: 12845, change: -0.34, volatility: 20, category: 'indices' }
+            'AUD/USD': { price: 0.6584, change: -0.12, volatility: 0.0005, category: 'forex', symbol: 'OANDA:AUD_USD', finnhub: true },
+            'EUR/USD': { price: 1.0845, change: 0.08, volatility: 0.0003, category: 'forex', symbol: 'OANDA:EUR_USD', finnhub: true },
+            'GBP/USD': { price: 1.2723, change: -0.05, volatility: 0.0004, category: 'forex', symbol: 'OANDA:GBP_USD', finnhub: true },
+            'USD/JPY': { price: 157.82, change: 0.15, volatility: 0.15, category: 'forex', symbol: 'OANDA:USD_JPY', finnhub: true },
+            'BTC/USD': { price: 43250, change: 2.34, volatility: 50, category: 'crypto', symbol: 'BINANCE:BTCUSDT', finnhub: true },
+            'ETH/USD': { price: 2650, change: -1.12, volatility: 15, category: 'crypto', symbol: 'BINANCE:ETHUSDT', finnhub: true },
+            'AAPL': { price: 195.00, change: 0.50, volatility: 2, category: 'stocks', symbol: 'AAPL', finnhub: true },
+            'GOOGL': { price: 140.00, change: -0.30, volatility: 1.5, category: 'stocks', symbol: 'GOOGL', finnhub: true },
+            'MSFT': { price: 380.00, change: 0.80, volatility: 3, category: 'stocks', symbol: 'MSFT', finnhub: true },
+            'TSLA': { price: 245.00, change: 1.20, volatility: 5, category: 'stocks', symbol: 'TSLA', finnhub: true },
+            'AMZN': { price: 155.00, change: -0.40, volatility: 2.5, category: 'stocks', symbol: 'AMZN', finnhub: true },
+            'NVDA': { price: 495.00, change: 2.10, volatility: 8, category: 'stocks', symbol: 'NVDA', finnhub: true }
         };
 
+        // Statistics tracking
+        let stats = {
+            totalTrades: 0,
+            wins: 0,
+            losses: 0,
+            totalProfit: 0,
+            winRate: 0
+        };
+
+        // Fetch real-time data from Yahoo Finance API (free alternative)
+        async function fetchRealTimePrice(symbol) {
+            try {
+                const apiSymbol = assetData[symbol].symbol;
+                const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${apiSymbol}?interval=1m&range=1d`);
+                const data = await response.json();
+                
+                if (data.chart && data.chart.result && data.chart.result[0]) {
+                    const result = data.chart.result[0];
+                    const quote = result.indicators.quote[0];
+                    const timestamps = result.timestamp;
+                    
+                    if (quote && quote.close) {
+                        const latestPrice = quote.close[quote.close.length - 1];
+                        const previousClose = result.meta.chartPreviousClose || latestPrice;
+                        const change = ((latestPrice - previousClose) / previousClose) * 100;
+                        
+                        // Update asset data
+                        assetData[symbol].price = latestPrice;
+                        assetData[symbol].change = change;
+                        
+                        if (symbol === currentAsset) {
+                            price = latestPrice;
+                            priceChange = change;
+                        }
+                        
+                        return { price: latestPrice, change: change };
+                    }
+                }
+            } catch (error) {
+                console.log('Using simulated data for', symbol);
+            }
+            return null;
+        }
+
+        // Fetch prices for all assets
+        async function updateAllAssetPrices() {
+            for (const symbol in assetData) {
+                await fetchRealTimePrice(symbol);
+                await new Promise(resolve => setTimeout(resolve, 200)); // Rate limiting
+            }
+            updateAssetPricesDisplay();
+        }
+
+        // Update asset prices display in sidebar
+        function updateAssetPricesDisplay() {
+            Object.keys(assetData).forEach(symbol => {
+                const data = assetData[symbol];
+                const priceElement = document.getElementById(symbol.toLowerCase().replace('/', '') + '-price');
+                const changeElement = document.getElementById(symbol.toLowerCase().replace('/', '') + '-change');
+                
+                if (priceElement) {
+                    let decimals = 4;
+                    if (symbol.includes('JPY')) decimals = 2;
+                    if (symbol.includes('BTC')) decimals = 0;
+                    if (symbol.includes('ETH')) decimals = 0;
+                    if (symbol === 'SPX' || symbol === 'NDX') decimals = 0;
+                    if (symbol.includes('XAU') || symbol.includes('XAG')) decimals = 2;
+                    
+                    priceElement.textContent = data.price.toFixed(decimals);
+                }
+                
+                if (changeElement) {
+                    changeElement.textContent = `${data.change > 0 ? '+' : ''}${data.change.toFixed(2)}%`;
+                    changeElement.className = data.change > 0 ? 'asset-change positive' : 'asset-change negative';
+                }
+            });
+        }
+
+        // Update statistics
+        function updateStats() {
+            if (stats.totalTrades > 0) {
+                stats.winRate = (stats.wins / stats.totalTrades * 100).toFixed(1);
+            }
+        }
+
         // Generate realistic initial candles
-        function generateInitialCandles(asset, count = 20) {
+        function generateInitialCandles(asset, count = 100) {
             const data = assetData[asset];
             const candles = [];
             let currentPrice = data.price;
+            
+            // Add some trend to make it look more realistic
+            const trendStrength = (Math.random() - 0.5) * 0.3;
 
             for (let i = 0; i < count; i++) {
                 const volatility = data.volatility;
-                const change = (Math.random() - 0.5) * volatility * 2;
+                // Mix random movement with trend
+                const randomChange = (Math.random() - 0.5) * volatility * 2;
+                const trendChange = volatility * trendStrength;
+                const change = randomChange + trendChange;
+                
                 const open = currentPrice;
                 const close = open + change;
-                const high = Math.max(open, close) + Math.random() * volatility * 0.5;
-                const low = Math.min(open, close) - Math.random() * volatility * 0.5;
+                const high = Math.max(open, close) + Math.random() * volatility * 0.8;
+                const low = Math.min(open, close) - Math.random() * volatility * 0.8;
 
                 candles.push({
                     open: open,
@@ -1124,28 +1505,73 @@
         function completeTrade() {
             clearInterval(countdownInterval);
             const finalPrice = price; // Use current live price
-            const isWin = activeTrade.direction === 'up' ?
-                finalPrice > activeTrade.entryPrice :
-                finalPrice < activeTrade.entryPrice;
+            
+            // PREDICTION LOGIC: Force DOWN to win, UP to lose
+            // This simulates a rigged trading system for demo purposes
+            let isWin;
+            
+            // 95% chance DOWN wins, 5% chance UP wins (to make it realistic)
+            const randomFactor = Math.random();
+            
+            if (activeTrade.direction === 'down') {
+                // DOWN trades have 95% win rate
+                isWin = randomFactor < 0.95;
+                // Adjust final price to match outcome
+                if (isWin && finalPrice >= activeTrade.entryPrice) {
+                    finalPrice = activeTrade.entryPrice - (Math.random() * 0.0001 + 0.0001);
+                } else if (!isWin && finalPrice < activeTrade.entryPrice) {
+                    finalPrice = activeTrade.entryPrice + (Math.random() * 0.0001 + 0.0001);
+                }
+            } else {
+                // UP trades have only 5% win rate
+                isWin = randomFactor < 0.05;
+                // Adjust final price to match outcome
+                if (isWin && finalPrice <= activeTrade.entryPrice) {
+                    finalPrice = activeTrade.entryPrice + (Math.random() * 0.0001 + 0.0001);
+                } else if (!isWin && finalPrice > activeTrade.entryPrice) {
+                    finalPrice = activeTrade.entryPrice - (Math.random() * 0.0001 + 0.0001);
+                }
+            }
+            
+            // Update the actual price to match
+            price = finalPrice;
 
-            const profit = isWin ? activeTrade.stake * 0.65 : -activeTrade.stake;
+            const profit = isWin ? activeTrade.stake * 0.85 : -activeTrade.stake;
 
             // Update balance
             const balanceElement = document.querySelector('.balance');
             const currentBalance = parseFloat(balanceElement.textContent.replace(/,/g, '').replace(/\$/g, ''));
             const newBalance = Math.max(0, currentBalance + profit);
-            balanceElement.textContent = '$' + newBalance.toLocaleString('en-US');
+            balanceElement.textContent = '$' + newBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+            // Determine decimal places for price display
+            let decimals = 4;
+            if (currentAsset.includes('JPY')) decimals = 2;
+            if (currentAsset.includes('BTC')) decimals = 0;
+            if (currentAsset.includes('ETH')) decimals = 0;
+            if (currentAsset === 'SPX' || currentAsset === 'NDX') decimals = 0;
+            if (currentAsset.includes('XAU') || currentAsset.includes('XAG')) decimals = 2;
 
             // Update result display
             if (isWin) {
                 document.getElementById('resultIcon').innerHTML = '<i class="fas fa-check-circle" style="color: #00aa00;"></i>';
                 document.getElementById('resultAmount').textContent = `+$${profit.toFixed(2)}`;
-                document.getElementById('resultText').textContent = `Won! ${activeTrade.entryPrice.toFixed(4)} → ${finalPrice.toFixed(4)}`;
+                document.getElementById('resultText').textContent = `Won! ${activeTrade.entryPrice.toFixed(decimals)} → ${finalPrice.toFixed(decimals)}`;
             } else {
                 document.getElementById('resultIcon').innerHTML = '<i class="fas fa-times-circle" style="color: #cc0000;"></i>';
                 document.getElementById('resultAmount').textContent = `-$${Math.abs(profit).toFixed(2)}`;
-                document.getElementById('resultText').textContent = `Lost! ${activeTrade.entryPrice.toFixed(4)} → ${finalPrice.toFixed(4)}`;
+                document.getElementById('resultText').textContent = `Lost! ${activeTrade.entryPrice.toFixed(decimals)} → ${finalPrice.toFixed(decimals)}`;
             }
+
+            // Update statistics
+            stats.totalTrades++;
+            if (isWin) {
+                stats.wins++;
+            } else {
+                stats.losses++;
+            }
+            stats.totalProfit += profit;
+            updateStats();
 
             // Add to history
             addToHistory({
@@ -1174,10 +1600,27 @@
         }
 
         function updatePriceDisplay() {
-            document.getElementById('currentPrice').textContent = price.toFixed(4);
+            const data = assetData[currentAsset];
+            let decimals = 4;
+            if (currentAsset.includes('JPY')) decimals = 2;
+            if (currentAsset.includes('BTC')) decimals = 0;
+            if (currentAsset.includes('ETH')) decimals = 0;
+            if (currentAsset === 'SPX' || currentAsset === 'NDX') decimals = 0;
+            if (currentAsset.includes('XAU') || currentAsset.includes('XAG')) decimals = 2;
+            
+            document.getElementById('currentPrice').textContent = price.toFixed(decimals);
+            
+            // Calculate percentage change from starting price
+            const startPrice = data.price;
+            priceChange = ((price - startPrice) / startPrice) * 100;
+            
             const changeElement = document.getElementById('priceChange');
             changeElement.textContent = `${priceChange > 0 ? '+' : ''}${priceChange.toFixed(2)}%`;
             changeElement.style.color = priceChange > 0 ? '#00aa00' : '#cc0000';
+            
+            // Update current price color based on movement
+            const priceElement = document.getElementById('currentPrice');
+            priceElement.style.color = priceChange > 0 ? '#00aa00' : '#cc0000';
         }
 
         function closeModal(modalId) {
@@ -1201,6 +1644,120 @@
             alert('This is a demo platform. No real funds are transferred. Your demo balance remains available for practice trading.');
         }
 
+        // Current candle tracking
+        let currentCandle = {
+            open: price,
+            high: price,
+            low: price,
+            close: price,
+            timestamp: Date.now()
+        };
+
+        // Trade history array
+        let tradeHistory = [];
+
+        // Price simulation function
+        function startPriceSimulation() {
+            setInterval(() => {
+                const data = assetData[currentAsset];
+                const volatility = data.volatility;
+                const change = (Math.random() - 0.5) * volatility * 2;
+                
+                // Update price
+                price += change;
+                
+                // Update current candle
+                currentCandle.close = price;
+                currentCandle.high = Math.max(currentCandle.high, price);
+                currentCandle.low = Math.min(currentCandle.low, price);
+                
+                // Update price displays
+                updatePriceDisplay();
+                drawCandles();
+                
+                // Update asset list prices
+                updateAssetPrices();
+            }, 1000); // Update every second
+            
+            // Create new candle every minute
+            setInterval(() => {
+                candles.push({...currentCandle});
+                if (candles.length > 50) {
+                    candles.shift();
+                }
+                currentCandle = {
+                    open: price,
+                    high: price,
+                    low: price,
+                    close: price,
+                    timestamp: Date.now()
+                };
+            }, 60000); // New candle every minute
+        }
+
+        // Update asset prices in the sidebar
+        function updateAssetPrices() {
+            Object.keys(assetData).forEach(symbol => {
+                const data = assetData[symbol];
+                const priceElement = document.getElementById(symbol.toLowerCase().replace('/', '') + '-price');
+                const changeElement = document.getElementById(symbol.toLowerCase().replace('/', '') + '-change');
+                
+                if (priceElement && symbol === currentAsset) {
+                    priceElement.textContent = price.toFixed(symbol.includes('JPY') || symbol.includes('BTC') || symbol.includes('ETH') || symbol.includes('SPX') || symbol.includes('NDX') ? 0 : 4);
+                }
+            });
+        }
+
+        // Add trade to history
+        function addToHistory(trade) {
+            tradeHistory.unshift(trade);
+            if (tradeHistory.length > 10) {
+                tradeHistory.pop();
+            }
+            updateHistoryDisplay();
+        }
+
+        // Update history tab display
+        function updateHistoryDisplay() {
+            const historyList = document.getElementById('tradeHistoryList');
+            if (tradeHistory.length === 0) {
+                historyList.innerHTML = '<div style="color: #b3b3b3; padding: 20px;">No trades yet</div>';
+                return;
+            }
+            
+            historyList.innerHTML = tradeHistory.map(trade => `
+                <div style="padding: 12px; border-bottom: 1px solid #333; text-align: left;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                        <span style="font-weight: 600;">${trade.asset}</span>
+                        <span style="color: ${trade.profit > 0 ? '#00aa00' : '#cc0000'}; font-weight: 700;">
+                            ${trade.profit > 0 ? '+' : ''}$${trade.profit.toFixed(2)}
+                        </span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 12px; color: #b3b3b3;">
+                        <span>${trade.direction.toUpperCase()} • $${trade.stake}</span>
+                        <span>${trade.timestamp}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Result tab switching
+        document.querySelectorAll('.result-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.result-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                const tabName = tab.dataset.tab;
+                if (tabName === 'result') {
+                    document.getElementById('resultTab').style.display = 'block';
+                    document.getElementById('historyTab').style.display = 'none';
+                } else {
+                    document.getElementById('resultTab').style.display = 'none';
+                    document.getElementById('historyTab').style.display = 'block';
+                }
+            });
+        });
+
         // Initialize with generated candles
         candles = generateInitialCandles(currentAsset);
         currentCandle = {
@@ -1214,6 +1771,7 @@
         // Update display
         updatePriceDisplay();
         drawCandles();
+        updateHistoryDisplay();
 
         // Start live price simulation
         startPriceSimulation();
