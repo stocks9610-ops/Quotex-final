@@ -1281,48 +1281,92 @@
             winRate: 0
         };
 
-        // Fetch real-time data from Yahoo Finance API (free alternative)
-        async function fetchRealTimePrice(symbol) {
+        // Fetch real-time data from Finnhub API
+        async function fetchFinnhubPrice(symbol) {
             try {
                 const apiSymbol = assetData[symbol].symbol;
-                const response = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${apiSymbol}?interval=1m&range=1d`);
+                const response = await fetch(`https://finnhub.io/api/v1/quote?symbol=${apiSymbol}&token=${FINNHUB_API_KEY}`);
                 const data = await response.json();
                 
-                if (data.chart && data.chart.result && data.chart.result[0]) {
-                    const result = data.chart.result[0];
-                    const quote = result.indicators.quote[0];
-                    const timestamps = result.timestamp;
+                if (data && data.c) {
+                    const latestPrice = data.c; // Current price
+                    const previousClose = data.pc || latestPrice; // Previous close
+                    const change = data.dp || 0; // Percentage change
                     
-                    if (quote && quote.close) {
-                        const latestPrice = quote.close[quote.close.length - 1];
-                        const previousClose = result.meta.chartPreviousClose || latestPrice;
-                        const change = ((latestPrice - previousClose) / previousClose) * 100;
-                        
-                        // Update asset data
-                        assetData[symbol].price = latestPrice;
-                        assetData[symbol].change = change;
-                        
-                        if (symbol === currentAsset) {
-                            price = latestPrice;
-                            priceChange = change;
-                        }
-                        
-                        return { price: latestPrice, change: change };
+                    // Update asset data
+                    assetData[symbol].price = latestPrice;
+                    assetData[symbol].change = change;
+                    
+                    if (symbol === currentAsset) {
+                        price = latestPrice;
+                        priceChange = change;
                     }
+                    
+                    console.log(`Updated ${symbol}: $${latestPrice} (${change.toFixed(2)}%)`);
+                    return { price: latestPrice, change: change };
                 }
             } catch (error) {
-                console.log('Using simulated data for', symbol);
+                console.error(`Error fetching ${symbol}:`, error);
             }
             return null;
         }
 
-        // Fetch prices for all assets
+        // Fetch prices for all assets using Finnhub
         async function updateAllAssetPrices() {
+            console.log('Fetching real-time prices from Finnhub API...');
             for (const symbol in assetData) {
-                await fetchRealTimePrice(symbol);
-                await new Promise(resolve => setTimeout(resolve, 200)); // Rate limiting
+                await fetchFinnhubPrice(symbol);
+                await new Promise(resolve => setTimeout(resolve, 300)); // Rate limiting
             }
             updateAssetPricesDisplay();
+        }
+
+        // WebSocket connection for real-time updates
+        function connectWebSocket() {
+            if (wsConnection && wsConnection.readyState === WebSocket.OPEN) {
+                return;
+            }
+
+            wsConnection = new WebSocket(`wss://ws.finnhub.io?token=${FINNHUB_API_KEY}`);
+
+            wsConnection.onopen = function() {
+                console.log('WebSocket connected to Finnhub');
+                // Subscribe to current asset
+                const symbol = assetData[currentAsset].symbol;
+                wsConnection.send(JSON.stringify({'type':'subscribe', 'symbol': symbol}));
+            };
+
+            wsConnection.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                if (data.type === 'trade' && data.data) {
+                    data.data.forEach(trade => {
+                        // Update price with real-time trade data
+                        price = trade.p;
+                        updatePriceDisplay();
+                        
+                        // Update candle
+                        currentCandle.close = price;
+                        currentCandle.high = Math.max(currentCandle.high, price);
+                        currentCandle.low = Math.min(currentCandle.low, price);
+                        drawCandles();
+                    });
+                }
+            };
+
+            wsConnection.onerror = function(error) {
+                console.error('WebSocket error:', error);
+            };
+
+            wsConnection.onclose = function() {
+                console.log('WebSocket disconnected');
+                // Reconnect after 5 seconds
+                setTimeout(() => {
+                    if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+                        reconnectAttempts++;
+                        connectWebSocket();
+                    }
+                }, 5000);
+            };
         }
 
         // Update asset prices display in sidebar
@@ -1773,8 +1817,14 @@
         drawCandles();
         updateHistoryDisplay();
 
-        // Start live price simulation
-        startPriceSimulation();
+        // Fetch real-time data on load
+        updateAllAssetPrices();
+        
+        // Connect to WebSocket for live updates
+        connectWebSocket();
+        
+        // Refresh prices every 5 seconds
+        setInterval(updateAllAssetPrices, 5000);
 
         // Event listeners
         document.getElementById('upBtn').addEventListener('click', () => startTrade('up'));
