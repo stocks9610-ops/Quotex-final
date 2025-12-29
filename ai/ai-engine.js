@@ -1,4 +1,4 @@
- async function getAIResponse(question) {
+async function getAIResponse(question) {
     const response = await fetch("/ai/knowledge.json");
     const data = await response.json();
 

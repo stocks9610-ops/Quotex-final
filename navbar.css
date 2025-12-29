@@ -28,14 +28,34 @@
   color: white;
 }
 
-@media (max-width: 700px) {
+/* Mobile Menu Styles */
+@media (max-width: 768px) {
   .menu {
     display: none;
     flex-direction: column;
-    background: #111;
-    padding: 10px;
+    width: 100%;
+    background-color: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(10px);
+    position: absolute;
+    top: 60px; /* Adjust based on header height */
+    left: 0;
+    padding: 20px;
+    border-bottom: 1px solid #333;
+    z-index: 1000;
   }
+
+  .menu.active {
+    display: flex;
+  }
+  
+  .menu li {
+    margin: 15px 0;
+    text-align: center;
+  }
+
   .menu-btn {
     display: block;
+    cursor: pointer;
+    font-size: 24px;
   }
 }

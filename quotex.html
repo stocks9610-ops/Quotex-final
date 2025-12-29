@@ -9,6 +9,10 @@
         href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Inter:wght@400;600;800&display=swap"
         rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#121418">
     <!-- TradingView Lightweight Charts -->
     <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <style>
@@ -627,11 +631,142 @@
             .order-book {
                 display: none;
             }
+
+            .social-bubble {
+                display: none !important;
+            }
+        }
+
+        /* --- SOCIAL BUBBLES --- */
+        .social-bubble {
+            position: absolute;
+            background: rgba(30, 34, 45, 0.9);
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 5px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+            animation: bubblePop 4s forwards;
+            z-index: 10;
+        }
+
+        @keyframes bubblePop {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            10% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            80% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+        }
+
+        .flag-icon {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+
+        /* --- SPLASH SCREEN --- */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0b0e11;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s;
+        }
+
+        .splash-logo {
+            font-size: 40px;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 30px;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .splash-loader {
+            width: 200px;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .splash-bar {
+            width: 50%;
+            height: 100%;
+            background: var(--accent-green);
+            position: absolute;
+            left: -50%;
+            animation: load 2s infinite ease-in-out;
+            box-shadow: 0 0 10px var(--accent-green);
+        }
+
+        .splash-text {
+            margin-top: 15px;
+            font-family: monospace;
+            color: #666;
+            font-size: 12px;
+        }
+
+        @keyframes load {
+            0% {
+                left: -50%;
+            }
+
+            50% {
+                left: 100%;
+            }
+
+            100% {
+                left: 100%;
+            }
         }
     </style>
 </head>
 
 <body>
+
+    <!-- SPLASH SCREEN -->
+    <div id="splash-screen">
+        <div class="splash-logo">
+            <i class="fas fa-layer-group" style="color:#0faf59;"></i>
+            QUOTEX
+        </div>
+        <div class="splash-loader">
+            <div class="splash-bar"></div>
+        </div>
+        <div class="splash-text" id="splashText">ESTABLISHING SECURE CONNECTION...</div>
+    </div>
 
     <!-- Header -->
     <header>
@@ -659,7 +794,7 @@
         <aside class="sidebar-tools">
             <div class="tool-icon active"><i class="fas fa-chart-line"></i></div>
             <div class="tool-icon"><i class="fas fa-history"></i></div>
-            <div class="tool-icon"><i class="fas fa-trophy"></i></div>
+            <div class="tool-icon" onclick="openModal('leaderboardModal')"><i class="fas fa-trophy"></i></div>
             <div class="tool-icon"><i class="fas fa-newspaper"></i></div>
             <div class="tool-icon" style="margin-top:auto; margin-bottom:20px;"><i class="fas fa-cog"></i></div>
         </aside>
@@ -689,7 +824,11 @@
             </div>
 
             <!-- Chart Container -->
-            <div id="chartContainer"></div>
+            <div id="chartContainer">
+                <div id="socialBubbles"
+                    style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; overflow:hidden;">
+                </div>
+            </div>
 
             <!-- Bottom Panel: Active Trades -->
             <div class="bottom-panel">
@@ -811,6 +950,20 @@
         </div>
     </div>
 
+    <!-- Leaderboard Modal -->
+    <div class="modal" id="leaderboardModal">
+        <div class="modal-content" style="max-width:500px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="color:#fff;"><i class="fas fa-trophy" style="color:gold;"></i> Top Traders (24h)</h3>
+                <i class="fas fa-times" style="cursor:pointer; color:#666;"
+                    onclick="closeModal('leaderboardModal')"></i>
+            </div>
+            <div style="max-height:400px; overflow-y:auto;" id="leaderboardList">
+                <!-- Items -->
+            </div>
+        </div>
+    </div>
+
     <div class="toast" id="toast">
         <i class="fas fa-check-circle" style="color:var(--accent-green)"></i>
         <span id="toastMsg">Order Placed Successfully</span>
@@ -837,10 +990,92 @@
             initChart();
             initWebSocket();
             initOrderBook();
+            initSocialBubbles();
+            initLeaderboard();
+            initClock();
+            initAIBot(); // Start AI Engine
             initClock();
             initAIBot(); // Start AI Engine
             updateUI();
+
+            // Remove Splash
+            setTimeout(() => {
+                document.getElementById('splashText').innerText = "SYNCHRONIZING MARKETS...";
+            }, 1000);
+            setTimeout(() => {
+                const s = document.getElementById('splash-screen');
+                s.style.opacity = 0;
+                setTimeout(() => s.remove(), 500);
+                playSound('STARTUP');
+            }, 2500);
         });
+
+        // --- AUDIO ENGINE (Web Audio API) ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'CLICK') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(300, now + 0.1);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            }
+            else if (type === 'WIN') {
+                // High pitch chime
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(500, now);
+                osc.frequency.linearRampToValueAtTime(1000, now + 0.1);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+                osc.start(now);
+                osc.stop(now + 0.5);
+
+                // Secondary harmony
+                setTimeout(() => {
+                    const osc2 = audioCtx.createOscillator();
+                    const gain2 = audioCtx.createGain();
+                    osc2.connect(gain2);
+                    gain2.connect(audioCtx.destination);
+                    osc2.type = 'triangle';
+                    osc2.frequency.setValueAtTime(800, audioCtx.currentTime);
+                    gain2.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain2.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    osc2.start(audioCtx.currentTime);
+                    osc2.stop(audioCtx.currentTime + 0.4);
+                }, 100);
+            }
+            else if (type === 'LOSS') {
+                // Low thud
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(150, now);
+                osc.frequency.exponentialRampToValueAtTime(50, now + 0.3);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.3);
+            }
+            else if (type === 'STARTUP') {
+                // Tech startup sound
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(200, now);
+                osc.frequency.exponentialRampToValueAtTime(600, now + 0.4);
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.linearRampToValueAtTime(0, now + 1);
+                osc.start(now);
+                osc.stop(now + 1);
+            }
+        }
 
         // --- CHART ENGINE (Lightweight Charts) ---
         function initChart() {
@@ -956,7 +1191,8 @@
             renderTrades();
             showToast(`Order #${trade.id} Placed`);
 
-            // Play Sound (Simulated via vibration for now to avoid assets)
+            // Play Sound
+            playSound('CLICK');
             if (navigator.vibrate) navigator.vibrate(50);
         }
 
@@ -1015,8 +1251,10 @@
                 const profit = trade.amount + (trade.amount * CONFIG.payout);
                 balance += profit;
                 showToast(`Won $${profit.toFixed(2)}`, false);
+                playSound('WIN');
             } else {
                 showToast(`Trade Loss -$${trade.amount}`, true);
+                playSound('LOSS');
             }
             updateUI();
         }
@@ -1088,22 +1326,118 @@
         function initClock() {
             setInterval(() => {
                 document.getElementById('serverTime').innerText = new Date().toISOString().split('T')[1].split('.')[0];
-
-                // AI Gauge Animation (Random)
-                const rsi = 30 + Math.floor(Math.random() * 40);
-                document.getElementById('rsiVal').innerText = rsi;
-                const sentiment = rsi < 40 ? 'BUY' : (rsi > 60 ? 'SELL' : 'NEUTRAL');
-                document.getElementById('sentimentText').innerText = "STRONG " + sentiment;
-                document.getElementById('sentimentBar').style.width = rsi + '%';
-                document.getElementById('sentimentBar').style.background = sentiment === 'BUY' ? '#0faf59' : '#ff4757';
-
             }, 1000);
+        }
+
+        // --- AI BOT ENGINE ---
+        function initAIBot() {
+            const statusEl = document.getElementById('aiStatus');
+            const dirEl = document.getElementById('aiDirection');
+            const confEl = document.getElementById('aiConfidence');
+            const dotEl = document.querySelector('.live-dot');
+
+            let isScanning = true;
+
+            setInterval(() => {
+                if (isScanning) {
+                    // Switch to SIGNAL
+                    isScanning = false;
+                    statusEl.innerText = "SIGNAL DETECTED";
+                    statusEl.style.color = "#fff";
+
+                    // Generate Logic
+                    const isPut = Math.random() > 0.4; // 60% chance for PUT (matches rigged flow)
+                    const dir = isPut ? 'PUT' : 'CALL';
+                    const color = isPut ? '#ff4757' : '#0faf59';
+                    const conf = 85 + Math.floor(Math.random() * 14); // 85-99%
+
+                    dirEl.innerText = dir;
+                    dirEl.style.color = color;
+                    confEl.innerText = conf + '%';
+
+                    // Visuals
+                    dotEl.style.background = color;
+                    if (navigator.vibrate) navigator.vibrate(200);
+
+                } else {
+                    // Switch to SCANNING
+                    isScanning = true;
+                    statusEl.innerText = "SCANNING MARKET...";
+                    statusEl.style.color = "#888";
+
+                    dirEl.innerText = "--";
+                    dirEl.style.color = "#fff";
+                    confEl.innerText = "--%";
+
+                    dotEl.style.background = "#888";
+                }
+            }, CONFIG.botFrequency || 4000);
         }
 
         // Modals
         window.openModal = (id) => document.getElementById(id).style.display = 'flex';
         window.closeModal = (id) => document.getElementById(id).style.display = 'none';
 
+        // --- SOCIAL BUBBLES ---
+        function initSocialBubbles() {
+            const container = document.getElementById('socialBubbles');
+            const flags = ['🇺🇸', '🇬🇧', '🇧🇷', '🇮🇳', '🇦🇪', '🇸🇦', '🇫🇷', '🇩🇪', '🇯🇵', '🇨🇳', '🇹🇷', '🇮🇩'];
+            const names = ['User123', 'Trader_Pro', 'Alex_W', 'Ahmed_K', 'Sarah_99', 'CryptoKing', 'Falcon_X', 'Winner24', 'LionHeart', 'Sniper007'];
+
+            setInterval(() => {
+                if (Math.random() > 0.4) return; // Random spacing
+
+                const bubble = document.createElement('div');
+                bubble.className = 'social-bubble';
+
+                // Content
+                const flag = flags[Math.floor(Math.random() * flags.length)];
+                const name = names[Math.floor(Math.random() * names.length)];
+                const amt = [50, 100, 200, 500, 1000, 2000][Math.floor(Math.random() * 6)];
+                const isPut = Math.random() > 0.5;
+                const dirIcon = isPut ? '<i class="fas fa-arrow-down" style="color:#ff4757"></i>' : '<i class="fas fa-arrow-up" style="color:#0faf59"></i>';
+
+                bubble.innerHTML = `${flag} <b>${name}</b> ${dirIcon} $${amt}`;
+
+                // Position
+                const top = 20 + Math.random() * 60; // 20-80% height
+                const left = 40 + Math.random() * 40; // 40-80% width
+                bubble.style.top = top + '%';
+                bubble.style.left = left + '%';
+
+                container.appendChild(bubble);
+
+                // Sound
+                // playSound('CLICK'); // Too annoying? Maybe very quiet tick?
+
+                setTimeout(() => bubble.remove(), 4000);
+            }, 800);
+        }
+
+        // --- LEADERBOARD ---
+        function initLeaderboard() {
+            const list = document.getElementById('leaderboardList');
+            const data = [
+                { n: "Sheikh_Al_Maktoum", c: "🇦🇪", p: 14250 },
+                { n: "Crypto_Viking", c: "🇳🇴", p: 12800 },
+                { n: "Rajesh_Kumar", c: "🇮🇳", p: 9540 },
+                { n: "Sarah_Connor", c: "🇺🇸", p: 8200 },
+                { n: "Boris_Y", c: "🇷🇺", p: 7600 },
+                { n: "Zhang_Wei", c: "🇨🇳", p: 6900 },
+                { n: "Ahmed_Fahad", c: "🇸🇦", p: 6250 },
+                { n: "Maria_S", c: "🇧🇷", p: 5800 },
+                { n: "John_Doe", c: "🇬🇧", p: 4100 },
+                { n: "Indo_Trader", c: "🇮🇩", p: 3500 }
+            ];
+
+            list.innerHTML = data.map((u, i) => `
+                <div style="display:flex; align-items:center; padding:10px; border-bottom:1px solid #333; gap:10px;">
+                    <div style="width:25px; height:25px; background:${i < 3 ? 'gold' : '#333'}; color:${i < 3 ? '#000' : '#fff'}; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px;">${i + 1}</div>
+                    <div style="font-size:12px;">${u.c} ${u.n}</div>
+                    <div style="margin-left:auto; color:var(--accent-green); font-weight:700;">+$${u.p.toLocaleString()}</div>
+                </div>
+            `).join('');
+        }
     </script>
 </body>
 

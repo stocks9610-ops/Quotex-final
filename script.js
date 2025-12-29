@@ -39,11 +39,11 @@ document.querySelectorAll('.benefit-card, .plan-card, .faq-item, .timeline-item'
 const qrUpload = document.getElementById('qr-upload');
 const qrPreview = document.getElementById('qr-preview');
 
-qrUpload.addEventListener('change', function(e) {
+qrUpload.addEventListener('change', function (e) {
     const file = e.target.files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             qrPreview.innerHTML = `<img src="${e.target.result}" alt="QR Code Preview" style="max-width: 100%; max-height: 200px; border-radius: 10px;">`;
         };
         reader.readAsDataURL(file);
@@ -56,12 +56,12 @@ qrUpload.addEventListener('change', function(e) {
 const screenshotUpload = document.getElementById('screenshot-upload');
 const gallery = document.getElementById('gallery');
 
-screenshotUpload.addEventListener('change', function(e) {
+screenshotUpload.addEventListener('change', function (e) {
     const files = Array.from(e.target.files);
     files.forEach(file => {
         if (file.type.startsWith('image/')) {
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 const img = document.createElement('img');
                 img.src = e.target.result;
                 img.alt = 'Mining Screenshot';
@@ -104,45 +104,47 @@ window.addEventListener('load', () => {
     }
 });
 
-// Mobile menu toggle (if needed for smaller screens)
+// Mobile menu toggle
 const nav = document.querySelector('nav ul');
-const menuToggle = document.createElement('div');
-menuToggle.innerHTML = '☰';
-menuToggle.style.display = 'none';
-menuToggle.style.cursor = 'pointer';
-menuToggle.style.fontSize = '1.5rem';
-menuToggle.style.color = '#00d4ff';
+const navContainer = document.querySelector('nav');
+let menuToggle = document.querySelector('.menu-btn');
 
-document.querySelector('nav').appendChild(menuToggle);
+// Create button if it doesn't exist (it should exist in HTML ideally, but we'll add it if missing)
+if (!menuToggle) {
+    menuToggle = document.createElement('div');
+    menuToggle.className = 'menu-btn';
+    menuToggle.innerHTML = '<i class="fas fa-bars"></i>'; // FontAwesome icon
+    // If FontAwesome isn't loaded, fallback to text
+    if (!document.querySelector('link[href*="font-awesome"]')) {
+        menuToggle.innerHTML = '☰';
+    }
+    navContainer.appendChild(menuToggle);
+}
 
 menuToggle.addEventListener('click', () => {
-    nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
-    nav.style.flexDirection = 'column';
-    nav.style.position = 'absolute';
-    nav.style.top = '100%';
-    nav.style.left = '0';
-    nav.style.width = '100%';
-    nav.style.background = 'rgba(0, 0, 0, 0.9)';
-    nav.style.padding = '1rem';
+    nav.classList.toggle('active');
+    // Toggle icon
+    if (nav.classList.contains('active')) {
+        menuToggle.innerHTML = '✕';
+    } else {
+        menuToggle.innerHTML = '☰';
+    }
+});
+
+// Close menu when clicking a link
+document.querySelectorAll('nav ul li a').forEach(link => {
+    link.addEventListener('click', () => {
+        nav.classList.remove('active');
+        menuToggle.innerHTML = '☰';
+    });
 });
 
 window.addEventListener('resize', () => {
     if (window.innerWidth > 768) {
-        nav.style.display = 'flex';
-        nav.style.flexDirection = 'row';
-        nav.style.position = 'static';
-        nav.style.width = 'auto';
-        nav.style.background = 'transparent';
-        nav.style.padding = '0';
-        menuToggle.style.display = 'none';
-    } else {
-        menuToggle.style.display = 'block';
-        nav.style.display = 'none';
+        nav.classList.remove('active');
+        menuToggle.innerHTML = '☰';
     }
 });
-
-// Initialize mobile menu on load
-window.dispatchEvent(new Event('resize'));
 
 // Add some crypto-themed particle effect (optional)
 function createParticles() {
